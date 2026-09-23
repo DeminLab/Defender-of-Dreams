@@ -51,6 +51,30 @@ namespace DefenderOfDreams.Core
             Set("ability.sleep", "Сон");
             Set("ability.forget", "Забыть");
             Set("death.player", "Неро растворяется в Изнанке...");
+
+            Set("speaker.iskazhenny", "Искажённый");
+            Set("iskazhenny.combat", "Ты тоже здесь заблудился...");
+            Set("iskazhenny.critical", "Не бей... я ещё помню...");
+            Set("iskazhenny.death", "Наконец-то тишина...");
+
+            Set("speaker.teacher", "Учитель");
+            Set("teacher.intro", "Ошибка. Опять ошибка.");
+            Set("teacher.phase2", "Ты не услышал! Повтори! ПОВТОРИ!");
+            Set("teacher.defeat", "Я... забыл, как это было...");
+            Set("boss.teacher", "УЧИТЕЛЬ");
+
+            Set("journal.title", "Журнал воспоминаний");
+            Set("journal.empty", "Пока пусто...");
+            Set("journal.found", "Найдено:");
+
+            Set("pause.saved", "Сохранено");
+            Set("pause.loaded", "Загружено");
+            Set("pause.nosave", "Нет сохранения");
+            Set("pause.resume", "Продолжить");
+            Set("pause.save", "Сохранить");
+            Set("pause.load", "Загрузить");
+            Set("pause.settings", "Настройки");
+            Set("pause.quit", "Выход");
         }
 
         [System.Serializable]

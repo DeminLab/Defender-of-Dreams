@@ -33,9 +33,9 @@ namespace DefenderOfDreams.Visuals
             if (scaler != null)
             {
                 scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-                scaler.referenceResolution = new Vector2(1280f, 720f);
+                scaler.referenceResolution = new Vector2(384f, 216f);
                 scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-                scaler.matchWidthOrHeight = 0.5f;
+                scaler.matchWidthOrHeight = 1f;
             }
 
             var health = FindChild(canvas.transform, "HealthBar");
@@ -142,6 +142,10 @@ namespace DefenderOfDreams.Visuals
                     ApplyColor(mr, new Color(1f, 0.35f, 0.3f, 1f), 0.35f);
                 else if (name.Contains("Poziratel"))
                     ApplyColor(mr, new Color(1f, 0.65f, 0.2f, 1f), 0.3f);
+                else if (name.Contains("Iskazhenny"))
+                    ApplyColor(mr, new Color(0.7f, 0.4f, 1f, 1f), 0.4f);
+                else if (name.Contains("Teacher"))
+                    ApplyColor(mr, new Color(1f, 0.9f, 0.6f, 1f), 0.5f);
                 else if (name.Contains("Ground"))
                     ApplyColor(mr, new Color(0.22f, 0.34f, 0.28f, 1f), 0f);
                 else if (name.Contains("FogOverlay"))
@@ -206,7 +210,8 @@ namespace DefenderOfDreams.Visuals
             foreach (var go in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
             {
                 var n = go.name;
-                bool isUnit = n.Contains("Player") || n.Contains("Shoroh") || n.Contains("Poziratel");
+                bool isUnit = n.Contains("Player") || n.Contains("Shoroh") || n.Contains("Poziratel")
+                    || n.Contains("Iskazhenny") || n.Contains("Teacher");
                 if (!isUnit)
                     continue;
                 if (go.GetComponent<UnitBob>() != null)
@@ -226,6 +231,8 @@ namespace DefenderOfDreams.Visuals
                 if (n.Contains("Player")) { label = "НЕРО"; color = new Color(0.55f, 0.85f, 1f); }
                 else if (n.Contains("Shoroh")) { label = "ШОРОХ"; color = new Color(1f, 0.45f, 0.4f); }
                 else if (n.Contains("Poziratel")) { label = "ПОЗИРАТЕЛЬ"; color = new Color(1f, 0.7f, 0.3f); }
+                else if (n.Contains("Iskazhenny")) { label = "ИСКАЖЁННЫЙ"; color = new Color(0.75f, 0.5f, 1f); }
+                else if (n.Contains("Teacher")) { label = "УЧИТЕЛЬ"; color = new Color(1f, 0.9f, 0.55f); }
                 if (label == null)
                     continue;
                 if (go.GetComponentInChildren<TextMesh>() != null)

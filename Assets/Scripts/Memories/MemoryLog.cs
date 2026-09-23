@@ -20,6 +20,7 @@ namespace DefenderOfDreams.Memories
         public static IReadOnlyList<MemoryEntry> All => Entries;
         public static event Action<MemoryEntry> Collected;
         public static event Action Cleared;
+        public static event Action Rebuilt;
 
         public static bool Has(int id) => Entries.Exists(e => e.id == id);
 
@@ -60,6 +61,7 @@ namespace DefenderOfDreams.Memories
             }
 
             Cleared?.Invoke();
+            Rebuilt?.Invoke();
         }
 
         public static void Export(List<int> ids, List<string> titles, List<string> texts)

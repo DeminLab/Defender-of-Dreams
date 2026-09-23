@@ -31,6 +31,7 @@ namespace DefenderOfDreams.FogOfWar
         public float revealBlendSpeed = 4f;
         public float ditherIntensity = 0.35f;
         public float ditherSpeed = 2f;
+        public bool ditherEnabled = true;
         public Color fogColor = new Color(0.03f, 0.03f, 0.05f, 1f);
         public Color fogAccentColor = new Color(0.12f, 0.1f, 0.18f, 1f);
         public bool simplifiedFallback;

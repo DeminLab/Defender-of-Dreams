@@ -50,9 +50,10 @@ namespace DefenderOfDreams.FogOfWar
             _material.SetColor(FogColorId, settings.fogColor);
             _material.SetColor(AccentColorId, settings.fogAccentColor);
             _material.SetFloat(MaxOpacityId, settings.fogMaxOpacity);
-            _material.SetFloat(DitherIntensityId, settings.simplifiedFallback ? 0f : settings.ditherIntensity);
+            bool simple = settings.simplifiedFallback || !settings.ditherEnabled;
+            _material.SetFloat(DitherIntensityId, simple ? 0f : settings.ditherIntensity);
             _material.SetFloat(DitherSpeedId, settings.ditherSpeed);
-            _material.SetFloat(SimplifiedId, settings.simplifiedFallback ? 1f : 0f);
+            _material.SetFloat(SimplifiedId, simple ? 1f : 0f);
 
             transform.position = targetCamera.transform.position + Vector3.forward * zOffset;
         }
