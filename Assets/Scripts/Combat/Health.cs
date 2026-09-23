@@ -6,8 +6,8 @@ namespace DefenderOfDreams.Combat
 {
     public class Health : MonoBehaviour, IDamageable
     {
-        [SerializeField] private int maxHealth = 5;
-        [SerializeField] private float invulnDuration = 1.1f;
+        [SerializeField, Min(1)] private int maxHealth = 5;
+        [SerializeField, Min(0f)] private float invulnDuration = 1.1f;
         [SerializeField] private bool isPlayer;
 
         private int _current;
@@ -25,18 +25,16 @@ namespace DefenderOfDreams.Combat
 
         private void Awake()
         {
+            maxHealth = Mathf.Max(1, maxHealth);
             _current = maxHealth;
         }
 
-        private void Start()
-        {
-            Raise();
-        }
+        private void Start() => Raise();
 
         private void Update()
         {
             if (_invulnTimer > 0f)
-                _invulnTimer -= Time.deltaTime;
+                _invulnTimer = Mathf.Max(0f, _invulnTimer - Time.deltaTime);
         }
 
         public void TakeDamage(int amount, Vector2 hitDirection)
@@ -61,6 +59,7 @@ namespace DefenderOfDreams.Combat
         {
             if (_dead || amount <= 0)
                 return;
+
             _current = Mathf.Min(maxHealth, _current + amount);
             Raise();
         }
@@ -83,12 +82,12 @@ namespace DefenderOfDreams.Combat
         public void ForceSetHealth(int value)
         {
             _current = Mathf.Clamp(value, 0, maxHealth);
-            if (_current > 0)
-                _dead = false;
+            _dead = _current <= 0;
+            _invulnTimer = 0f;
             Raise();
         }
 
-        private void SetInvulnForced(float duration)
+        public void SetInvulnerability(float duration)
         {
             _invulnTimer = Mathf.Max(_invulnTimer, duration);
         }

@@ -7,7 +7,7 @@ namespace DefenderOfDreams.Core
         public static GameManager Instance { get; private set; }
 
         [Header("Autosave")]
-        [SerializeField] private float autosaveInterval = 60f;
+        [SerializeField, Min(5f)] private float autosaveInterval = 60f;
 
         public bool IsPaused { get; private set; }
 
@@ -29,6 +29,7 @@ namespace DefenderOfDreams.Core
         {
             if (SaveService.Instance != null && SaveService.Instance.HasSave)
                 SaveService.Instance.Load();
+
             GameEvents.RaiseGameLoaded();
         }
 
@@ -37,12 +38,8 @@ namespace DefenderOfDreams.Core
             if (IsPaused)
                 return;
 
-            _autosaveTimer += Time.deltaTime;
-            if (_autosaveTimer >= autosaveInterval)
-            {
-                SaveService.Instance?.Save();
-                _autosaveTimer = 0f;
-            }
+            // SaveService is the single owner of autosaving.
+            // Keeping the timer here previously caused duplicate writes.
         }
 
         public void SaveGame() => SaveService.Instance?.Save();

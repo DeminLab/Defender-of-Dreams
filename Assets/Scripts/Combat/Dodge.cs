@@ -48,7 +48,7 @@ namespace DefenderOfDreams.Combat
             if (controller != null)
                 controller.InputLocked = true;
             if (health != null)
-                health.SendMessage("SetInvulnForced", dashDuration + 0.05f, SendMessageOptions.DontRequireReceiver);
+                health.SetInvulnerability(dashDuration + 0.05f);
 
             float t = 0f;
             while (t < dashDuration)

@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
-using DefenderOfDreams.Core;
+using DefenderOfDreams.Combat;
+using DefenderOfDreams.FogOfWar;
 using DefenderOfDreams.Memories;
 using DefenderOfDreams.Save;
 using UnityEngine;
@@ -10,9 +9,9 @@ namespace DefenderOfDreams.Core
 {
     public class SaveService : MonoBehaviour
     {
-        [SerializeField] private float autosaveInterval = 60f;
+        [SerializeField, Min(5f)] private float autosaveInterval = 60f;
         [SerializeField] private Transform player;
-        [SerializeField] private Combat.Health playerHealth;
+        [SerializeField] private Health playerHealth;
 
         private float _timer;
         public static SaveService Instance { get; private set; }
@@ -38,7 +37,8 @@ namespace DefenderOfDreams.Core
 
         private void Update()
         {
-            _timer += Time.deltaTime;
+            _timer += Time.unscaledDeltaTime;
+
             if (_timer >= autosaveInterval)
             {
                 _timer = 0f;
@@ -48,15 +48,29 @@ namespace DefenderOfDreams.Core
             var kb = Keyboard.current;
             if (kb == null)
                 return;
+
             if (kb.f5Key.wasPressedThisFrame)
                 Save();
-            if (kb.f9Key.wasPressedThisFrame)
+            else if (kb.f9Key.wasPressedThisFrame)
                 Load();
+        }
+
+        private void OnApplicationPause(bool paused)
+        {
+            if (paused)
+                Save();
+        }
+
+        private void OnApplicationFocus(bool focused)
+        {
+            if (!focused)
+                Save();
         }
 
         public void Save()
         {
             var data = new SaveData();
+
             if (player != null)
             {
                 data.playerX = player.position.x;
@@ -72,7 +86,7 @@ namespace DefenderOfDreams.Core
             data.storyFlags = GameFlags.GetExport();
             MemoryLog.Export(data.memoryIds, data.memoryTitles, data.memoryTexts);
 
-            var fog = FogOfWar.FogOfWarSystem.Instance;
+            var fog = FogOfWarSystem.Instance;
             if (fog != null)
                 fog.WriteToSave(data);
 
@@ -87,18 +101,23 @@ namespace DefenderOfDreams.Core
                 return false;
 
             if (player != null)
-                player.position = new Vector3(data.playerX, data.playerY, 0f);
+                player.position = new Vector3(data.playerX, data.playerY, player.position.z);
 
             if (playerHealth != null)
-                playerHealth.RestoreFull();
+            {
+                int savedMax = Mathf.Max(1, data.playerMaxHealth);
+                playerHealth.Configure(savedMax, true);
+                playerHealth.ForceSetHealth(Mathf.Clamp(data.playerHealth, 1, savedMax));
+            }
 
             GameFlags.SetImport(data.storyFlags);
             MemoryLog.Rebuild(data.memoryIds, data.memoryTitles, data.memoryTexts);
 
-            var fog = FogOfWar.FogOfWarSystem.Instance;
+            var fog = FogOfWarSystem.Instance;
             if (fog != null)
                 fog.ReadFromSave(data);
 
+            _timer = 0f;
             GameEvents.RaiseGameLoaded();
             return true;
         }
