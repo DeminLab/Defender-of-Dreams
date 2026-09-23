@@ -51,6 +51,9 @@ desktop.ini
 # opencode local state
 .opencode/
 opencode.json
-opencode.json
-opencode.json
-opencode.json
+
+# zcode local tool config
+.zcode/
+
+# node tools dependencies
+node_modules/

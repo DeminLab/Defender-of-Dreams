@@ -1,0 +1,3 @@
+
+# unity-open-mcp local server (node_modules only; package.json is committable)
+node_modules/

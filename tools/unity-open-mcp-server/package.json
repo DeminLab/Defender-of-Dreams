@@ -1,0 +1,8 @@
+{
+  "name": "defender-of-dreams-unity-mcp",
+  "private": true,
+  "description": "Local install of unity-open-mcp MCP server (pinned to the bridge version installed in Packages/manifest.json)",
+  "dependencies": {
+    "unity-open-mcp": "1.2.3"
+  }
+}
